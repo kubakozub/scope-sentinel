@@ -1,5 +1,7 @@
 # scope-sentinel
 
+[![tests](https://github.com/kubakozub/scope-sentinel/actions/workflows/tests.yml/badge.svg)](https://github.com/kubakozub/scope-sentinel/actions/workflows/tests.yml)
+
 **Confirm a target is *in scope* for a bug-bounty program before you touch it.**
 
 `scope-sentinel` is a small, offline command-line tool that answers one question
