@@ -1,0 +1,14 @@
+Example Corp Public Bug Bounty
+
+In scope
+  * *.example.com
+  * api.example.com
+  - https://example.com/api/*
+  203.0.113.0/24
+
+Out of scope
+  - blog.example.com
+  - admin.example.com
+  - *.internal.example.com
+
+Please read our README.md before testing. Questions? security@example.com

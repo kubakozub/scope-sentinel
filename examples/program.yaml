@@ -1,0 +1,20 @@
+# Example bug-bounty scope for scope-sentinel.
+# Hosts use RFC-reserved documentation names/ranges (example.com, 203.0.113.0/24,
+# 2001:db8::/48) so nothing here points at a real target.
+program: Example Corp Public Program
+
+in_scope:
+  - host: "*.example.com"          # apex + any sub-domain
+    type: web
+  - "api.example.com"
+  - "https://example.com/api/*"    # only the /api area of the apex site
+  - "203.0.113.0/24"               # TEST-NET-3 range
+  - host: "2001:db8:abcd::/48"
+    type: infra
+
+out_of_scope:
+  - "blog.example.com"             # a specific host carved out
+  - host: "admin.example.com"
+    type: web
+  - "*.internal.example.com"       # a whole sub-tree excluded
+  - "https://example.com/api/legacy/*"
