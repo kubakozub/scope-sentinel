@@ -7,7 +7,7 @@
 `scope-sentinel` is a small, offline command-line tool that answers one question
 reliably: *"Am I allowed to test this?"* You give it a program's scope (a simple
 YAML or JSON file) and a target (URL, host, or IP), and it returns a clear
-verdict — `IN_SCOPE`, `OUT_OF_SCOPE`, or `NOT_LISTED` — with the exact rule that
+verdict (`IN_SCOPE`, `OUT_OF_SCOPE`, or `NOT_LISTED`) with the exact rule that
 decided it and a script-friendly exit code.
 
 > Requirements: **Python 3.9+**, standard library only. No third-party
@@ -20,7 +20,7 @@ research into an incident report. Scopes are fiddly: wildcards have surprising
 edge cases, a single host is often *carved out* of an otherwise in-scope domain,
 and "out of scope always wins" is easy to get wrong by hand. `scope-sentinel`
 makes that decision explicit and repeatable so you can put it in front of every
-scan, fuzzing run, or manual session — and in CI so an out-of-scope target
+scan, fuzzing run, or manual session, and in CI so an out-of-scope target
 *fails the build* instead of getting probed.
 
 This is a responsible-disclosure discipline tool. It never touches the target.
@@ -82,10 +82,10 @@ $ echo $?
 ## Scope file format
 
 A scope file is a mapping with `in_scope` and `out_of_scope` lists. Both YAML (a
-documented subset — see *Limitations*) and JSON are supported natively; the JSON
+documented subset, see *Limitations*) and JSON are supported natively; the JSON
 form is byte-for-byte the same structure. Each list entry is either:
 
-* a **string** — the pattern itself, e.g. `"*.example.com"`; or
+* a **string**: the pattern itself, e.g. `"*.example.com"`; or
 * a **mapping** with a `host` (or `pattern` / `url` / `cidr` / `ip`) key and an
   optional `type` label:
 
@@ -104,7 +104,7 @@ Entries are classified by their syntax and matched as follows:
 | Form | Example | Matches |
 |------|---------|---------|
 | **Exact host** | `api.example.com` | that host only (case-insensitive, port ignored) |
-| **Wildcard domain** | `*.example.com` | the apex `example.com` **and** any sub-domain at any depth (`a.example.com`, `a.b.example.com`) — never `notexample.com` |
+| **Wildcard domain** | `*.example.com` | the apex `example.com` **and** any sub-domain at any depth (`a.example.com`, `a.b.example.com`), never `notexample.com` |
 | **IP address** | `203.0.113.7` | that address only |
 | **CIDR range** | `203.0.113.0/24`, `2001:db8::/48` | any IP inside the range; IPv4 and IPv6 never cross |
 | **URL prefix** | `https://example.com/api/*` | host matches *and* path matches (see below) |
@@ -118,9 +118,9 @@ Key rules:
   matching how most programs word their scope. It does *not* match unrelated
   suffixes such as `notexample.com`.
 * **URL paths** support two styles:
-  * `.../api/*` — glob: `*` matches any run of characters, so it matches
+  * `.../api/*` is a glob: `*` matches any run of characters, so it matches
     everything strictly under `/api/`.
-  * `.../api` — boundary prefix: matches `/api` and `/api/anything`, but **not**
+  * `.../api` is a boundary prefix: it matches `/api` and `/api/anything`, but **not**
     `/apidocs`.
   The scheme is ignored, so a rule works with or without `http(s)://`.
 * **No DNS.** Hostnames are never resolved to IPs. A hostname is checked against
@@ -149,9 +149,9 @@ Exit codes are designed to gate testing in scripts and CI:
 
 | Code | Meaning |
 |------|---------|
-| `0`  | in scope — all targets cleared to test |
-| `2`  | out of scope — at least one target is explicitly denied |
-| `3`  | not listed — no target is denied, but at least one isn't covered |
+| `0`  | in scope: all targets cleared to test |
+| `2`  | out of scope: at least one target is explicitly denied |
+| `3`  | not listed: no target is denied, but at least one isn't covered |
 | `1`  | runtime error (missing/malformed scope file, bad target) |
 | `64` | command-line usage error |
 
@@ -200,7 +200,7 @@ $ pbpaste | scope-sentinel convert-scope - --program "Example Corp" > program.ya
 
 It recognises `In scope` / `Out of scope` headings, strips bullets and markdown,
 pulls out host/URL/IP/CIDR tokens, and skips obvious noise (email domains,
-source-file names). This step is a **best-effort heuristic** — always read the
+source-file names). This step is a **best-effort heuristic**. Always read the
 result before relying on it.
 
 ## Use as a library
@@ -219,14 +219,14 @@ print(result.reason)
 * **Scope is only as good as the file.** The tool checks a target against the
   rules you give it; keeping the file faithful to the program policy is on you.
 * **No DNS / no network.** Hostnames are not resolved; an IP target won't match a
-  hostname rule and vice-versa. This is deliberate — the tool stays offline.
+  hostname rule and vice-versa. This is deliberate: the tool stays offline.
 * **YAML is a documented subset** (mappings, block sequences, sequences of
   mappings, quoted/bare scalars, `#` comments; spaces for indentation). Flow
-  collections, anchors, and multi-document files are not supported — use JSON for
+  collections, anchors, and multi-document files are not supported: use JSON for
   those. If PyYAML-level YAML matters to you, write the scope as JSON.
 * **`convert-scope` is heuristic** and meant as a starting point, not a source of
   truth.
-* **Not legal advice.** A machine verdict is a guardrail, not authorization —
+* **Not legal advice.** A machine verdict is a guardrail, not authorization:
   the program's written policy always governs.
 
 ## Responsible use

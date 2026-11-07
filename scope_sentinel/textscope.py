@@ -1,8 +1,8 @@
 """Best-effort conversion of a pasted, plain-text scope list into the
 scope-sentinel format.
 
-This is a *heuristic*. Program scope pages come in every shape — bullet lists,
-markdown tables, headings, prose — so this module extracts host/URL/IP tokens
+This is a *heuristic*. Program scope pages come in every shape (bullet lists,
+markdown tables, headings, prose), so this module extracts host/URL/IP tokens
 and buckets them under in-scope / out-of-scope sections. Always review the
 output before trusting it.
 

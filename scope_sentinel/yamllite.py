@@ -20,7 +20,7 @@ Not supported (documented limitation)
 -------------------------------------
 Flow collections with contents (``[a, b]``, ``{k: v}``), anchors/aliases,
 multi-line/blocked scalars, and multiple documents. Indentation must use
-spaces, not tabs. For anything richer, write the scope file as JSON instead —
+spaces, not tabs. For anything richer, write the scope file as JSON instead:
 JSON is parsed natively by the standard library.
 """
 from __future__ import annotations

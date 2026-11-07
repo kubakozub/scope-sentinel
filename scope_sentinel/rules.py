@@ -7,14 +7,14 @@ matches a target.
 
 Matching semantics (also documented in the README):
 
-* **exact host** ``api.example.com`` — matches only that host.
-* **wildcard domain** ``*.example.com`` — matches the apex ``example.com`` *and*
+* **exact host** ``api.example.com``: matches only that host.
+* **wildcard domain** ``*.example.com``: matches the apex ``example.com`` *and*
   any sub-domain at any depth (``a.example.com``, ``a.b.example.com``). It never
   matches an unrelated host such as ``notexample.com``.
-* **IP / CIDR** ``203.0.113.7`` or ``203.0.113.0/24`` or ``2001:db8::/48`` —
+* **IP / CIDR** ``203.0.113.7`` or ``203.0.113.0/24`` or ``2001:db8::/48``:
   matches an IP target inside the range. Address families never cross (an IPv4
   target never matches an IPv6 range). Hostnames are **not** resolved to IPs.
-* **URL prefix** ``https://example.com/api/*`` — the target's host must match
+* **URL prefix** ``https://example.com/api/*``: the target's host must match
   the host part, and its path must match the path part. ``*`` matches any run of
   characters; a path without ``*`` matches at a path boundary (``/api`` matches
   ``/api`` and ``/api/v1`` but not ``/apidocs``). The scheme is ignored, so a
@@ -281,7 +281,7 @@ class Rule:
     def specificity(self):
         """A sortable score; higher wins when several rules match a target.
 
-        Used only to choose which matching rule to *display* — it never changes
+        Used only to choose which matching rule to *display*, it never changes
         the verdict (out-of-scope always wins regardless of specificity).
         """
         if self.kind == KIND_HOST:
